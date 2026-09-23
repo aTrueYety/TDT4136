@@ -52,17 +52,24 @@ class CSP:
         bool
             False if a domain becomes empty, otherwise True
         """
+        
+        # Ready the que of arcs to work through.
         queue = Queue()
         for variable1, variable2 in self.binary_constraints.keys():
+            # Add both orientations of the edge to the queue, since edges are only stored in one orientation.
             queue.put((variable1, variable2))
             queue.put((variable2, variable1))
 
         while not queue.empty():
             variable1, variable2 = queue.get()
+            
+            # Revise the domain of variable1 to satisfy the binary constraint with variable2.
             if self.revise(variable1, variable2):
                 if len(self.domains[variable1]) == 0:
+                    # If the domain of variable1 is empty, then the CSP is unsatisfiable.
                     return False
                 for neighbor in self.get_neighbors(variable1):
+                    # Add the arc (neighbor, variable1) to the queue for further processing.
                     if neighbor != variable2:
                         queue.put((neighbor, variable1))
         return True
@@ -118,10 +125,29 @@ class CSP:
         return result
     
     def is_consistent(self, variable, value, assignment) -> bool:
+        """Checks whether the given value is consistent with the current assignment for the given variable.
+
+        Parameters
+        ----------
+            variable : str
+                The variable to check
+            value : int
+                The value to check
+            assignment : dict[str, int]
+                The current assignment
+
+        Returns
+        -------
+        bool
+            True if the value is consistent, False otherwise.
+        """
+        # Check against all other variables in the assignment.
         for other, other_value in assignment.items():
+            # Check first if there is a binary constraint between the two variables, and then check if the value pair is allowed by the constraint.
             if ((variable, other) in self.binary_constraints and
                     (value, other_value) not in self.binary_constraints[(variable, other)]):
                 return False
+            # Check the other orientation of the edge, since edges are only stored in one orientation.
             if ((other, variable) in self.binary_constraints and
                     (value, other_value) not in self.binary_constraints[(other, variable)]):
                 return False
