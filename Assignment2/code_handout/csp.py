@@ -75,7 +75,14 @@ class CSP:
         None | dict[str, Any]
             A solution if any exists, otherwise None
         """
+        # Counters for a single summary line at the end of the search
+        calls = 0
+        failures = 0
+
         def backtrack(assignment: dict[str, Any]) -> None | dict[str, Any]:
+            nonlocal calls, failures
+            calls += 1
+
             # Escape condition: if all variables are assigned, return the assignment
             if len(assignment) == len(self.variables):
                 return assignment
@@ -103,9 +110,12 @@ class CSP:
                     else:
                         # If the recursive call did not return a solution, remove the variable from the assignment and continue with the next value.
                         del assignment[variable]
+            failures += 1
             return None
 
-        return backtrack({})
+        result = backtrack({})
+        print(f"backtrack() calls: {calls}, failures: {failures}")
+        return result
     
     def is_consistent(self, variable, value, assignment) -> bool:
         for other, other_value in assignment.items():

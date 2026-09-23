@@ -55,6 +55,9 @@ csp = CSP(
 )
 
 print(csp.ac_3())
+# Print domains after AC-3
+for variable in sorted(csp.domains.keys()):
+    print(f"{variable}: {csp.domains[variable]}")
 print_solution(csp.backtracking_search())
 
 # Expected output after implementing csp.ac_3() and csp.backtracking_search():
