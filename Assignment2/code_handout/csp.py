@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 from queue import Queue
 
 
@@ -67,7 +67,7 @@ class CSP:
                         queue.put((neighbor, variable1))
         return True
 
-    def backtracking_search(self) -> None | dict[str, Any]:
+    def backtracking_search(self) -> Optional[dict[str, Any]]:
         """Performs backtracking search on the CSP.
         
         Returns
@@ -79,7 +79,7 @@ class CSP:
         calls = 0
         failures = 0
 
-        def backtrack(assignment: dict[str, Any]) -> None | dict[str, Any]:
+        def backtrack(assignment: dict[str, Any]) -> Optional[dict[str, Any]]:
             nonlocal calls, failures
             calls += 1
 
