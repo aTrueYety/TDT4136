@@ -1,6 +1,9 @@
 # Sudoku problems.
 # The CSP.ac_3() and CSP.backtrack() methods need to be implemented
 
+from pathlib import Path
+import time
+
 from csp import CSP, alldiff
 
 
@@ -20,7 +23,8 @@ def print_solution(solution):
 
 
 # Choose Sudoku problem
-grid = open('sudoku_very_hard.txt').read().split()
+grid_path = Path(__file__).parent / 'sudoku_very_hard.txt'
+grid = grid_path.read_text().split()
 
 width = 9
 box_width = 3
@@ -58,7 +62,13 @@ print(csp.ac_3())
 # Print domains after AC-3
 for variable in sorted(csp.domains.keys()):
     print(f"{variable}: {csp.domains[variable]}")
-print_solution(csp.backtracking_search())
+
+    start_time = time.perf_counter()
+solution = csp.backtracking_search()
+runtime = time.perf_counter() - start_time
+
+print(f"Backtracking runtime: {runtime:.6f} seconds")
+print_solution(solution)
 
 # Expected output after implementing csp.ac_3() and csp.backtracking_search():
 # True
