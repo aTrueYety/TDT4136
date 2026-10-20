@@ -1,5 +1,6 @@
 from copy import deepcopy
 import math
+import time
 
 State = tuple[int, list[list[int | None]]]  # Tuple of player (whose turn it is),
                                             # and board as a 2d list of ints (0 or 1) or None
@@ -148,3 +149,21 @@ while not game.is_terminal(state):
     assert action is not None
     state = game.result(state, action)
     game.print(state)
+
+# Time the alpha-beta search on an empty board
+game = Game()
+state = game.initial_state()
+game.print(state)
+start = time.time_ns()
+_ = alpha_beta_search(game, state)
+end = time.time_ns()
+print("Time taken for alpha-beta search:", (end - start) / 10**6, "ms")
+
+# Time the minimax search on an empty board
+game = Game()
+state = game.initial_state()
+game.print(state)
+start = time.time_ns()
+_ = minimax_search(game, state)
+end = time.time_ns()
+print("Time taken for minimax search:", (end - start) / 10**6, "ms")
