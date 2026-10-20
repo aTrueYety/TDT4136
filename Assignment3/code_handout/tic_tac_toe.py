@@ -10,7 +10,7 @@ Action = tuple[int, int]  # Where to place the player's piece as coordinates (ro
 class Game:
 
     def initial_state(self) -> State:
-        return (0, [[None, None, None], [None, None, None], [None, None, None]])
+        return (0, [[0, 1, 1], [0, None, None], [None, None, None]])
 
     def to_move(self, state: State) -> int:
         player_index, _ = state
@@ -53,9 +53,11 @@ class Game:
     def utility(self, state, player):
         assert self.is_terminal(state)
         if self.is_winner(state, player):
-            return 1
-        if self.is_winner(state, (player + 1) % 2):
-            return -1
+            empty_cells = sum(1 for row in range(3) for col in range(3) if state[1][row][col] is None)
+            return 1 + empty_cells  # The more empty cells, the better for the winner
+        elif self.is_winner(state, (player + 1) % 2):
+            empty_cells = sum(1 for row in range(3) for col in range(3) if state[1][row][col] is None)
+            return -1 - empty_cells  # The more empty cells, the worse for the loser
         return 0
 
     def print(self, state: State):
