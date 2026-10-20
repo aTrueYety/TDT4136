@@ -23,7 +23,7 @@ def print_solution(solution):
 
 
 # Choose Sudoku problem
-grid_path = Path(__file__).parent / 'sudoku_very_hard.txt'
+grid_path = Path(__file__).parent / 'sudoku_medium.txt'
 grid = grid_path.read_text().split()
 
 width = 9
@@ -58,16 +58,17 @@ csp = CSP(
     edges=edges,
 )
 
-print(csp.ac_3())
-# Print domains after AC-3
-for variable in sorted(csp.domains.keys()):
-    print(f"{variable}: {csp.domains[variable]}")
+start_time = time.perf_counter()
 
-    start_time = time.perf_counter()
-solution = csp.backtracking_search()
+ac3_result = csp.ac_3()
+solution = None
+
+if ac3_result:
+    solution = csp.backtracking_search()
+
 runtime = time.perf_counter() - start_time
 
-print(f"Backtracking runtime: {runtime:.6f} seconds")
+print(f"AC-3 + backtracking runtime: {runtime:.6f} seconds")
 print_solution(solution)
 
 # Expected output after implementing csp.ac_3() and csp.backtracking_search():
