@@ -150,6 +150,8 @@ while not game.is_terminal(state):
     state = game.result(state, action)
     game.print(state)
 
+
+print("\n### Time measurements ###")
 # Time the alpha-beta search on an empty board
 game = Game()
 state = game.initial_state()
