@@ -50,24 +50,24 @@ def minimax_search(game: Game, state: State) -> Action | None:
     player = game.to_move(state)  # the player to move is MAX
 
     def max_value(game: Game, state: State) -> tuple[float, Action | None]:
-            if game.is_terminal(state):
-                return game.utility(state, player), None
-            v, best_action = -math.inf, None
-            for action in game.actions(state):
-                v2, _ = min_value(game, game.result(state, action))
-                if v2 > v:
-                    v, best_action = v2, action
-            return v, best_action
+      if game.is_terminal(state):
+          return game.utility(state, player), None
+      v, best_action = -math.inf, None
+      for action in game.actions(state):
+          v2, _ = min_value(game, game.result(state, action))
+          if v2 > v:
+              v, best_action = v2, action
+      return v, best_action
     
     def min_value(game: Game, state: State) -> tuple[float, Action | None]:
-        if game.is_terminal(state):
-            return game.utility(state, player), None
-        v, best_action = math.inf, None
-        for action in game.actions(state):
-            v2, _ = max_value(game, game.result(state, action))
-            if v2 < v:
-                v, best_action = v2, action
-        return v, best_action
+      if game.is_terminal(state):
+          return game.utility(state, player), None
+      v, best_action = math.inf, None
+      for action in game.actions(state):
+          v2, _ = max_value(game, game.result(state, action))
+          if v2 < v:
+              v, best_action = v2, action
+      return v, best_action
 
     _, action = max_value(game, state)
     return action
